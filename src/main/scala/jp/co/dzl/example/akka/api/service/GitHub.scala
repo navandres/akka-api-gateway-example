@@ -13,11 +13,11 @@ trait GitHub {
 class GitHubImpl(host: String, port: Int, timeout: Int, httpClient: HttpClient) extends GitHub {
   def from(original: HttpRequest): Flow[HttpRequest, HttpRequest, NotUsed] =
     Flow[HttpRequest].map { req =>
-      val xForwardedHost = original.headers.find(_.is("host")).map(_.value()).getOrElse(s"$host:$port")
+      val xForwardedHost = original.headers.find(_.is("host")).map(_.value).getOrElse(s"$host:$port")
       val modifiedHeader = original.addHeader(RawHeader("X-Forwarded-Host", xForwardedHost))
         .headers
-        .filterNot(_.lowercaseName() == "host")
-        .filterNot(_.lowercaseName() == "timeout-access")
+        .filterNot(_.lowercaseName == "host")
+        .filterNot(_.lowercaseName == "timeout-access")
       req.withHeaders(modifiedHeader)
     }
 

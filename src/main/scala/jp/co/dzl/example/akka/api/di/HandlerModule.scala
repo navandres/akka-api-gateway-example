@@ -9,14 +9,11 @@ import scaldi.Module
 class HandlerModule extends Module {
   bind[UsersHandler] to new UsersHandler(
     actorSystem = inject[ActorSystem],
-    github = inject[GitHub]
-  )
+    github = inject[GitHub])
 
   bind[List[Handler]] to List(
-    inject[UsersHandler]
-  )
+    inject[UsersHandler])
 
   bind[RootHandler] to new RootHandler(
-    handlers = inject[List[Handler]]
-  )
+    handlers = inject[List[Handler]])
 }
